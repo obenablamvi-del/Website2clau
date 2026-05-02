@@ -8,146 +8,48 @@
 <script src="libs/html2canvas.min.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,sans-serif; }
-  body {
-    background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-    min-height:100vh; padding:20px; color:#333;
-  }
-  .container {
-    max-width:1100px; margin:0 auto;
-    background:rgba(255,255,255,0.97);
-    border-radius:20px; padding:30px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.3);
-    backdrop-filter:blur(10px);
-  }
+  body { background:linear-gradient(135deg,#667eea,#764ba2); min-height:100vh; padding:20px; color:#333; }
+  .container { max-width:1100px; margin:0 auto; background:rgba(255,255,255,0.97); border-radius:20px; padding:30px; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
   header { text-align:center; margin-bottom:25px; }
-  header h1 {
-    font-size:2.2rem;
-    background:linear-gradient(135deg,#667eea,#764ba2);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    margin-bottom:5px;
-  }
+  header h1 { font-size:2.2rem; background:linear-gradient(135deg,#667eea,#764ba2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:5px; }
   header p { color:#666; font-size:0.95rem; }
-
-  .grid {
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:12px; margin-bottom:20px;
-  }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-bottom:20px; }
   .field { display:flex; flex-direction:column; }
-  .field label {
-    font-size:0.85rem; font-weight:600;
-    color:#555; margin-bottom:5px;
-  }
-  select, input[type="text"], input[type="number"] {
-    padding:10px; border:2px solid #e0e0e0;
-    border-radius:8px; font-size:0.9rem;
-    background:#fff; transition:.3s;
-  }
-  select:focus, input:focus {
-    outline:none; border-color:#667eea;
-    box-shadow:0 0 0 3px rgba(102,126,234,0.2);
-  }
-
-  .margins {
-    display:grid; grid-template-columns:repeat(4,1fr);
-    gap:8px; margin-bottom:20px;
-    padding:15px; background:#f8f9ff;
-    border-radius:10px; border:2px dashed #c5cdf5;
-  }
+  .field label { font-size:0.85rem; font-weight:600; color:#555; margin-bottom:5px; }
+  select, input[type="text"], input[type="number"] { padding:10px; border:2px solid #e0e0e0; border-radius:8px; font-size:0.9rem; background:#fff; transition:.3s; }
+  select:focus, input:focus { outline:none; border-color:#667eea; box-shadow:0 0 0 3px rgba(102,126,234,0.2); }
+  .margins { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:20px; padding:15px; background:#f8f9ff; border-radius:10px; border:2px dashed #c5cdf5; }
   .margins .field label { font-size:0.8rem; }
-
-  textarea {
-    width:100%; min-height:220px;
-    padding:15px; border:2px solid #e0e0e0;
-    border-radius:10px; font-family:'Courier New',monospace;
-    font-size:0.9rem; resize:vertical;
-    transition:.3s;
-  }
-  textarea:focus {
-    outline:none; border-color:#667eea;
-    box-shadow:0 0 0 3px rgba(102,126,234,0.2);
-  }
-
-  .meta {
-    display:flex; justify-content:space-between;
-    font-size:0.8rem; color:#777; margin:5px 2px 15px;
-  }
-
-  .buttons {
-    display:flex; flex-wrap:wrap; gap:10px;
-    margin-bottom:20px;
-  }
-  button {
-    flex:1; min-width:130px;
-    padding:12px 20px; border:none;
-    border-radius:10px; font-size:0.95rem;
-    font-weight:600; cursor:pointer;
-    transition:.3s; color:#fff;
-  }
+  textarea { width:100%; min-height:220px; padding:15px; border:2px solid #e0e0e0; border-radius:10px; font-family:'Courier New',monospace; font-size:0.9rem; resize:vertical; transition:.3s; }
+  textarea:focus { outline:none; border-color:#667eea; box-shadow:0 0 0 3px rgba(102,126,234,0.2); }
+  .meta { display:flex; justify-content:space-between; font-size:0.8rem; color:#777; margin:5px 2px 15px; }
+  .buttons { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+  button { flex:1; min-width:130px; padding:12px 20px; border:none; border-radius:10px; font-size:0.95rem; font-weight:600; cursor:pointer; transition:.3s; color:#fff; }
   button:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.2); }
-  button:active { transform:translateY(0); }
   .btn-preview { background:linear-gradient(135deg,#4facfe,#00f2fe); }
   .btn-download { background:linear-gradient(135deg,#11998e,#38ef7d); }
   .btn-load { background:linear-gradient(135deg,#f093fb,#f5576c); }
   .btn-example { background:linear-gradient(135deg,#fa709a,#fee140); }
   .btn-clear { background:linear-gradient(135deg,#868f96,#596164); }
-
-  #preview {
-    width:100%; min-height:300px;
-    border:2px solid #e0e0e0; border-radius:10px;
-    background:#fff; padding:15px;
-    overflow:auto;
-  }
-  .preview-header {
-    display:flex; justify-content:space-between;
-    align-items:center; margin-bottom:10px;
-  }
+  #preview { width:100%; min-height:300px; border:2px solid #e0e0e0; border-radius:10px; background:#fff; padding:15px; overflow:auto; }
+  .preview-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
   .preview-header h3 { color:#555; }
-  .fullscreen-btn {
-    background:#667eea; color:#fff; border:none;
-    padding:6px 12px; border-radius:6px;
-    cursor:pointer; font-size:0.8rem;
-  }
-
-  .toast {
-    position:fixed; bottom:20px; left:50%;
-    transform:translateX(-50%);
-    background:#333; color:#fff;
-    padding:12px 25px; border-radius:30px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.3);
-    opacity:0; transition:.4s; z-index:9999;
-  }
-  .toast.show { opacity:1; bottom:40px; }
+  .fullscreen-btn { background:#667eea; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.8rem; }
+  .toast { position:fixed; bottom:-100px; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:12px 25px; border-radius:30px; box-shadow:0 5px 20px rgba(0,0,0,0.3); transition:.4s; z-index:9999; }
+  .toast.show { bottom:40px; }
   .toast.success { background:linear-gradient(135deg,#11998e,#38ef7d); }
   .toast.error { background:linear-gradient(135deg,#eb3349,#f45c43); }
-
-  .loader {
-    display:none; position:fixed; inset:0;
-    background:rgba(0,0,0,0.7); z-index:9998;
-    justify-content:center; align-items:center;
-    flex-direction:column; color:#fff;
-  }
+  .loader { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9998; justify-content:center; align-items:center; flex-direction:column; color:#fff; }
   .loader.show { display:flex; }
-  .spinner {
-    width:60px; height:60px;
-    border:5px solid rgba(255,255,255,0.3);
-    border-top-color:#fff; border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin-bottom:15px;
-  }
+  .spinner { width:60px; height:60px; border:5px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation:spin 1s linear infinite; margin-bottom:15px; }
   @keyframes spin { to { transform:rotate(360deg); } }
-
-  .fullscreen #preview {
-    position:fixed; inset:0; z-index:9997;
-    border-radius:0; min-height:100vh;
-  }
-
+  .fullscreen #preview { position:fixed; inset:0; z-index:9997; border-radius:0; min-height:100vh; }
   @media(max-width:600px){
     header h1{font-size:1.6rem;}
     .container{padding:20px 15px;}
     button{min-width:100%;}
     .margins{grid-template-columns:repeat(2,1fr);}
+    .meta{flex-direction:column;gap:5px;}
   }
 </style>
 </head>
@@ -160,8 +62,7 @@
   </header>
 
   <div class="grid">
-    <div class="field">
-      <label>📄 Format</label>
+    <div class="field"><label>📄 Format</label>
       <select id="format">
         <option value="a4">A4</option>
         <option value="a3">A3</option>
@@ -170,51 +71,35 @@
         <option value="legal">Legal</option>
       </select>
     </div>
-    <div class="field">
-      <label>🔄 Orientation</label>
+    <div class="field"><label>🔄 Orientation</label>
       <select id="orientation">
         <option value="portrait">Portrait</option>
         <option value="landscape">Paysage</option>
       </select>
     </div>
-    <div class="field">
-      <label>📑 Mode de page</label>
+    <div class="field"><label>📑 Mode de page</label>
       <select id="pageMode">
         <option value="multi">Pages multiples</option>
         <option value="single">Page longue unique</option>
       </select>
     </div>
-    <div class="field">
-      <label>✨ Qualité</label>
+    <div class="field"><label>✨ Qualité</label>
       <select id="quality">
         <option value="1">Standard</option>
         <option value="2" selected>Haute (2x)</option>
         <option value="3">Très haute (3x)</option>
       </select>
     </div>
-    <div class="field">
-      <label>💾 Nom du fichier</label>
+    <div class="field"><label>💾 Nom du fichier</label>
       <input type="text" id="filename" value="document" placeholder="document">
     </div>
   </div>
 
   <div class="margins">
-    <div class="field">
-      <label>⬆ Marge haut (mm)</label>
-      <input type="number" id="mTop" value="10" min="0" max="50">
-    </div>
-    <div class="field">
-      <label>⬇ Marge bas (mm)</label>
-      <input type="number" id="mBottom" value="10" min="0" max="50">
-    </div>
-    <div class="field">
-      <label>⬅ Marge gauche (mm)</label>
-      <input type="number" id="mLeft" value="10" min="0" max="50">
-    </div>
-    <div class="field">
-      <label>➡ Marge droite (mm)</label>
-      <input type="number" id="mRight" value="10" min="0" max="50">
-    </div>
+    <div class="field"><label>⬆ Marge haut (mm)</label><input type="number" id="mTop" value="10" min="0" max="50"></div>
+    <div class="field"><label>⬇ Marge bas (mm)</label><input type="number" id="mBottom" value="10" min="0" max="50"></div>
+    <div class="field"><label>⬅ Marge gauche (mm)</label><input type="number" id="mLeft" value="10" min="0" max="50"></div>
+    <div class="field"><label>➡ Marge droite (mm)</label><input type="number" id="mRight" value="10" min="0" max="50"></div>
   </div>
 
   <label style="font-weight:600;color:#555;display:block;margin-bottom:5px;">📝 Code HTML</label>
@@ -225,19 +110,21 @@
   </div>
 
   <div class="buttons">
-    <button class="btn-example" onclick="loadExample()">✨ Exemple</button>
-    <button class="btn-load" onclick="document.getElementById('fileInput').click()">📂 Charger</button>
+    <button class="btn-example" id="btnExample">✨ Exemple</button>
+    <button class="btn-load" id="btnLoad">📂 Charger</button>
     <input type="file" id="fileInput" accept=".html,.htm,.txt" style="display:none">
-    <button class="btn-preview" onclick="previewHTML()">👁️ Prévisualiser</button>
-    <button class="btn-download" onclick="downloadPDF()">📥 Télécharger PDF</button>
-    <button class="btn-clear" onclick="clearAll()">🗑️ Effacer</button>
+    <button class="btn-preview" id="btnPreview">👁️ Prévisualiser</button>
+    <button class="btn-download" id="btnDownload">📥 Télécharger PDF</button>
+    <button class="btn-clear" id="btnClear">🗑️ Effacer</button>
   </div>
 
   <div class="preview-header">
     <h3>👁️ Aperçu</h3>
-    <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Plein écran</button>
+    <button class="fullscreen-btn" id="btnFullscreen">⛶ Plein écran</button>
   </div>
-  <div id="preview"><p style="color:#999;text-align:center;padding:40px;">Aucun aperçu pour le moment...</p></div>
+  <div id="preview">
+    <p style="color:#999;text-align:center;padding:40px;">Aucun aperçu pour le moment...</p>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -247,8 +134,257 @@
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
   const $ = id => document.getElementById(id);
   const htmlInput = $('htmlInput');
   const preview = $('preview');
+  const toast = $('toast');
+  const loader = $('loader');
+  const fileInput = $('fileInput');
 
-  // Comp
+  function showToast(msg, type = 'success') {
+    toast.textContent = msg;
+    toast.className = 'toast show ' + type;
+    setTimeout(() => {
+      toast.className = 'toast';
+    }, 3000);
+  }
+
+  function updateCount() {
+    $('charCount').textContent = htmlInput.value.length + ' caractères';
+  }
+
+  htmlInput.addEventListener('input', () => {
+    updateCount();
+    try {
+      localStorage.setItem('mhc_html', htmlInput.value);
+    } catch (e) {}
+  });
+
+  try {
+    const saved = localStorage.getItem('mhc_html');
+    if (saved) {
+      htmlInput.value = saved;
+      updateCount();
+    }
+  } catch (e) {}
+
+  $('btnExample').addEventListener('click', function() {
+    htmlInput.value = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Document de démonstration</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 30px; color: #333; }
+h1 { color: #667eea; border-bottom: 3px solid #764ba2; padding-bottom: 10px; }
+h2 { margin-top: 25px; color: #444; }
+.box { background: #f0f4ff; padding: 20px; border-radius: 10px; margin: 20px 0; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+th { background: #667eea; color: white; }
+ul { margin: 10px 0 0 20px; }
+.footer { margin-top: 30px; font-size: 12px; color: #777; text-align: center; }
+</style>
+</head>
+<body>
+  <h1>📄 Document de démonstration</h1>
+
+  <div class="box">
+    <p>Voici un exemple de document HTML que vous pouvez convertir en PDF.</p>
+    <p>Ce convertisseur fonctionne hors ligne et permet une prévisualisation avant téléchargement.</p>
+  </div>
+
+  <h2>✅ Fonctionnalités</h2>
+  <ul>
+    <li>Prévisualisation HTML</li>
+    <li>Import de fichiers .html, .htm et .txt</li>
+    <li>Export PDF multi-pages ou page unique</li>
+    <li>Choix de la qualité et des marges</li>
+  </ul>
+
+  <h2>📊 Tableau d'exemple</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Fonction</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Alice</td>
+        <td>Designer</td>
+        <td>Actif</td>
+      </tr>
+      <tr>
+        <td>Bob</td>
+        <td>Développeur</td>
+        <td>Actif</td>
+      </tr>
+      <tr>
+        <td>Charlie</td>
+        <td>Chef de projet</td>
+        <td>En réunion</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    Généré avec Master HTML Converter
+  </div>
+</body>
+</html>`;
+    updateCount();
+    try {
+      localStorage.setItem('mhc_html', htmlInput.value);
+    } catch (e) {}
+    showToast('Exemple chargé avec succès');
+  });
+
+  $('btnLoad').addEventListener('click', function() {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      htmlInput.value = event.target.result;
+      updateCount();
+      try {
+        localStorage.setItem('mhc_html', htmlInput.value);
+      } catch (e) {}
+      showToast('Fichier chargé avec succès');
+    };
+    reader.onerror = function() {
+      showToast('Erreur lors du chargement du fichier', 'error');
+    };
+    reader.readAsText(file);
+  });
+
+  $('btnPreview').addEventListener('click', function() {
+    const html = htmlInput.value.trim();
+    if (!html) {
+      showToast('Veuillez saisir du code HTML', 'error');
+      return;
+    }
+
+    preview.innerHTML = html;
+    showToast('Aperçu généré');
+  });
+
+  $('btnClear').addEventListener('click', function() {
+    htmlInput.value = '';
+    preview.innerHTML = '<p style="color:#999;text-align:center;padding:40px;">Aucun aperçu pour le moment...</p>';
+    updateCount();
+    try {
+      localStorage.removeItem('mhc_html');
+    } catch (e) {}
+    showToast('Contenu effacé');
+  });
+
+  $('btnFullscreen').addEventListener('click', function() {
+    document.body.classList.toggle('fullscreen');
+    this.textContent = document.body.classList.contains('fullscreen') ? '✖ Fermer' : '⛶ Plein écran';
+  });
+
+  $('btnDownload').addEventListener('click', async function() {
+    const html = htmlInput.value.trim();
+    if (!html) {
+      showToast('Veuillez saisir du code HTML avant export', 'error');
+      return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const format = $('format').value;
+    const orientation = $('orientation').value === 'portrait' ? 'p' : 'l';
+    const pageMode = $('pageMode').value;
+    const quality = parseInt($('quality').value, 10);
+    const filename = ($('filename').value || 'document').replace(/[\\\\/:*?"<>|]+/g, '_');
+
+    const mTop = parseFloat($('mTop').value) || 0;
+    const mBottom = parseFloat($('mBottom').value) || 0;
+    const mLeft = parseFloat($('mLeft').value) || 0;
+    const mRight = parseFloat($('mRight').value) || 0;
+
+    loader.classList.add('show');
+
+    try {
+      const temp = document.createElement('div');
+      temp.style.position = 'fixed';
+      temp.style.left = '-99999px';
+      temp.style.top = '0';
+      temp.style.width = '794px';
+      temp.style.background = '#fff';
+      temp.style.padding = '0';
+      temp.style.zIndex = '-1';
+      temp.innerHTML = html;
+      document.body.appendChild(temp);
+
+      const canvas = await html2canvas(temp, {
+        scale: quality,
+        useCORS: true,
+        backgroundColor: '#ffffff'
+      });
+
+      const pdf = new jsPDF({
+        orientation,
+        unit: 'mm',
+        format
+      });
+
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      const usableWidth = pageWidth - mLeft - mRight;
+      const usableHeight = pageHeight - mTop - mBottom;
+
+      const imgData = canvas.toDataURL('image/png');
+      const imgWidth = usableWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      if (pageMode === 'single') {
+        const singlePdf = new jsPDF({
+          orientation,
+          unit: 'mm',
+          format: [pageWidth, imgHeight + mTop + mBottom]
+        });
+        singlePdf.addImage(imgData, 'PNG', mLeft, mTop, imgWidth, imgHeight);
+        singlePdf.save(filename + '.pdf');
+      } else {
+        let heightLeft = imgHeight;
+        let position = mTop;
+
+        pdf.addImage(imgData, 'PNG', mLeft, position, imgWidth, imgHeight);
+        heightLeft -= usableHeight;
+
+        while (heightLeft > 0) {
+          pdf.addPage();
+          position = mTop - (imgHeight - heightLeft);
+          pdf.addImage(imgData, 'PNG', mLeft, position, imgWidth, imgHeight);
+          heightLeft -= usableHeight;
+        }
+
+        pdf.save(filename + '.pdf');
+      }
+
+      document.body.removeChild(temp);
+      showToast('PDF généré avec succès');
+    } catch (error) {
+      console.error(error);
+      showToast('Erreur lors de la génération du PDF', 'error');
+    } finally {
+      loader.classList.remove('show');
+    }
+  });
+
+  updateCount();
+});
+</script>
+
+</body>
+</html>
